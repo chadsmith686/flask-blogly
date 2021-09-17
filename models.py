@@ -14,6 +14,12 @@ class User(db.Model):
     last_name = db.Column(db.Text, nullable=False, unique=True)
     image_url = db.Column(db.Text, nullable=False, default=DEFAULT_IMAGE_URL)
 
+    @property
+    def full_name(self):
+        """Return full name of user."""
+
+        return f"{self.first_name} {self.last_name}"
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False)
@@ -22,10 +28,10 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     @property
-    def full_name(self):
-        """Return full name of user."""
+    def friendly_date(self):
+        """Return nicely-formatted date."""
 
-        return f"{self.first_name} {self.last_name}"
+        return self.created_at.strftime("%a %b %-d  %Y, %-I:%M %p")
 
 def connect_db(app):
     db.app = app
