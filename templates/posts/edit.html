@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Post{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>Edit Post</h1>
+
+    <form method="POST">
+
+        <div class="col-sm-3 mb-3">
+            <label for="title">Title</label>
+            <input class="form-control" id="title" name="title">
+        </div>
+        <div class="col-sm-3 mb-3">
+            <label for="post_content">Content</label>
+            <input class="form-control" id="post_content" name="post_content">
+        </div>
+        <a href="/users/{{ user.id }}" class="btn btn-primary">Cancel</a>
+        <button type="submit" class="btn btn-success">Edit</button>
+    </form>
+</div>
+
+
+{% endblock %}
