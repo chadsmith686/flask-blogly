@@ -15,8 +15,16 @@ db.create_all()
 
 @app.route('/')
 def root():
-    """Redirects home route to list of users"""
-    return redirect("/users")
+    """Show recent list of posts, most-recent first."""
+    posts = Post.query.order_by(Post.created_at.desc()).limit(5).all()
+    return render_template("posts/homepage.html", posts=posts)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    """Show 404 NOT FOUND page."""
+
+    return render_template('404.html'), 404
 
 @app.route('/users', methods=["GET"])
 def list_users():
@@ -80,6 +88,8 @@ def users_destroy(user_id):
 
     return redirect("/users")
 
+#################### PART 2 ######################
+
 @app.route('/users/<int:user_id>/posts/new')
 def new_user_posts(user_id):
     user = User.query.get_or_404(user_id)
@@ -99,6 +109,12 @@ def posts_new(user_id):
     db.session.commit()
 
     return redirect(f"/users/{user_id}")
+
+@app.route('/posts/<int:post_id>')
+def posts_show(post_id):
+    """Show a post. Show buttons to edit and delete the post."""
+    post = Post.query.get_or_404(post_id)
+    return render_template('/posts/show.html', post=post)
 
 @app.route('/posts/<int:post_id>/edit')
 def posts_edit(post_id):
